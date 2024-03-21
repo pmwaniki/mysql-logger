@@ -1,0 +1,25 @@
+[mysql]
+user='<DATABASEUSERNAME>'
+host='127.0.0.1'
+port=3306
+password='<DATABASEPASSWORD'
+
+
+[rabbitmq]
+user='<DATABASEUSERNAME>'
+host='127.0.0.1'
+port=3306
+password='<DATABASEPASSWORD>'
+virtual_host='<VIRTUALHOST>'
+
+[kafka]
+bootstrap_servers=['server1:9092','server2:9092']
+security_protocol='SSL'
+ssl_keyfile='/etc/ssl/kafka/client-key.pem'
+ssl_certfile='/etc/ssl/kafka/client-cert.pem'
+
+
+[settings]
+pc_name='pc1'
+binlog_log_path = '/tmp/mysql-logger-binlog.log'
+upload_log_path = '/tmp/mysql-logger-upload.log'
