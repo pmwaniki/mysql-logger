@@ -10,8 +10,8 @@ virtual_env:
 
 install:
 	make virtual_env
-#	./$(VENV)/bin/python -m pip install --upgrade pip
-#	./$(VENV)/bin/python -m pip install -r requirements.txt
+	./$(VENV)/bin/python -m pip install --upgrade pip
+	./$(VENV)/bin/python -m pip install -r requirements.txt
 	#cp  mysql-binlog.service /etc/systemd/system/mysql-binlog.service
 	sed 's@<CWD>@$(CWD)@g' mysql-binlog.service > /etc/systemd/system/mysql-binlog.service
 	sed 's@<CWD>@$(CWD)@g' mysql-kafka-upload.service > /etc/systemd/system/mysql-kafka-upload.service
@@ -26,5 +26,5 @@ uninstall:
 	-systemctl stop mysql-kafka-upload.service
 	-rm -f /etc/systemd/system/mysql-binlog.service
 	-rm -f /etc/systemd/system/mysql-kafka-upload.service
-	systemctl deamon-reload
+	systemctl daemon-reload
 	rm -rf $(VENV)

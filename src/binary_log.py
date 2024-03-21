@@ -8,7 +8,7 @@ import pymysql
 
 import json
 
-from settings import database_config, server_id, rabbitmq_config, upload_log_path
+from settings import database_config, rabbitmq_config,binlog_log_path
 from src.kv_store import KeyValueStore
 
 
@@ -29,7 +29,7 @@ stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
-# rotate_handler = RotatingFileHandler(upload_log_path, maxBytes=20, backupCount=5)
+# rotate_handler = RotatingFileHandler(binlog_log_path, maxBytes=20, backupCount=5)
 # logger.addHandler(rotate_handler)
 
 
