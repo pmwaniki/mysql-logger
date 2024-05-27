@@ -9,6 +9,7 @@ import pika
 from kafka import KafkaProducer
 
 from settings import rabbitmq_config, kafka_config, upload_log_path
+from src.loggers import GroupWriteRotatingFileHandler
 
 broker_url = f'amqp://{rabbitmq_config["user"]}:{rabbitmq_config["password"]}@{rabbitmq_config["host"]}:{rabbitmq_config["port"]}/{rabbitmq_config["virtual_host"]}'
 
@@ -21,7 +22,8 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
-rotate_handler = RotatingFileHandler(upload_log_path, maxBytes=20, backupCount=5)
+rotate_handler = GroupWriteRotatingFileHandler(upload_log_path, maxBytes=1000000, backupCount=5)
+rotate_handler.setFormatter(formatter)
 logger.addHandler(rotate_handler)
 
 

@@ -10,7 +10,7 @@ import json
 
 from settings import database_config, rabbitmq_config,binlog_log_path
 from src.kv_store import KeyValueStore
-
+from src.loggers import GroupWriteRotatingFileHandler
 
 key_value_store=KeyValueStore()
 broker_url = f'amqp://{rabbitmq_config["user"]}:{rabbitmq_config["password"]}@{rabbitmq_config["host"]}:{rabbitmq_config["port"]}/{rabbitmq_config["virtual_host"]}'
@@ -29,8 +29,9 @@ stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
-# rotate_handler = RotatingFileHandler(binlog_log_path, maxBytes=20, backupCount=5)
-# logger.addHandler(rotate_handler)
+rotate_handler = GroupWriteRotatingFileHandler(binlog_log_path, maxBytes=1000000, backupCount=5)
+rotate_handler.setFormatter(formatter)
+logger.addHandler(rotate_handler)
 
 
 

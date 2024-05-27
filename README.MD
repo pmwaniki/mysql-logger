@@ -49,8 +49,18 @@ sudo rabbitmqctl set_permissions -p replication-vhost myuser ".*" ".*" ".*"
 ```
 Substitute in appropriate values for myuser, mypassword and myvhost above.
 
+## Install python application
+```shell
+make install
+sudo systemctl start mysql-binlog
+sudo systemctl start mysql-kafka-upload
+```
 
-
+## Enable python application to start automatically
+```shell
+sudo systemctl enable mysql-binlog
+sudo systemctl enable mysql-kafka-upload
+```
 
 # Recovery
 ## list snapshots
