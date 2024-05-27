@@ -1,5 +1,10 @@
 # MYSQL REPLICATION
 
+
+## Archtecture
+
+![Architecture](./architecture.svg "Architecture")
+
 ## Configuring MySQL
 
 Check whether the log-bin option is already on:
@@ -35,13 +40,14 @@ FLUSH PRIVILEGES;
 ```
 
 
-# Set up RabbitMQ
+
 ## Installation
+## Set up RabbitMQ
 ```shell
 sudo apt-get install rabbitmq-server
 ```
 
-## Create a RabbitMQ user, a virtual host and allow that user access to that virtual host
+### Create a RabbitMQ user, a virtual host and allow that user access to that virtual host
 ```shell
 sudo rabbitmqctl add_user myuser mypassword
 sudo rabbitmqctl add_vhost replication-vhost
@@ -50,13 +56,20 @@ sudo rabbitmqctl set_permissions -p replication-vhost myuser ".*" ".*" ".*"
 Substitute in appropriate values for myuser, mypassword and myvhost above.
 
 ## Install python application
+Edit config.toml to match the settings of: 
+- Remote kafka including adding ssl certificates for connecting to remote Kafka.
+- Local MySQL database
+- Computer name containing MySQL database to be backed up. This should be unique
+
+
+
 ```shell
 make install
 sudo systemctl start mysql-binlog
 sudo systemctl start mysql-kafka-upload
 ```
 
-## Enable python application to start automatically
+### Enable python application to start automatically
 ```shell
 sudo systemctl enable mysql-binlog
 sudo systemctl enable mysql-kafka-upload
