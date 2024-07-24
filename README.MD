@@ -3,7 +3,18 @@
 
 ## Archtecture
 
-![Architecture](./architecture.svg "Architecture")
+![Architecture](architecture.png "Architecture")
+
+The application consists of two background tasks. One task periodically checks the MySQL binlog for changes and writes those changes to a RabbitMQ queue. The other background task checks whether Kafka is accessible (online) and sends logs in the RabbitMq queue to Kafka.
+
+The application requires a kafka installation on remote server that can be accessed from the
+ computer with MySQL that one intends to backup. Communication between the local machine and remote server should be encrypted using SSL.
+
+
+The default setup require communication to Kafka be encrypted
+using SSL and connections of clients (local machines) to Kafka to authenticate using self-signed SSL certificates.
+One can ensure that data from one local machine cannot be accessed from another machine backing up to the same Kafka instance using Kafka ACL.
+In such a setup, Kafka ACL are setup such that each user can only access Kafka topics whose name match the username (eg pc1-*).
 
 ## Configuring MySQL
 
@@ -29,10 +40,15 @@ binlog_rows_query_log_events=ON
 
 
 
-# enable gtid
+# enable gtid (optional)
 gtid_mode=ON
 enforce-gtid-consistency=ON
 ## Create MySQL user for replication
+```
+
+Create a MySQL user with replication rights. 
+Replace 'replication-user' and 'replication-password' with appropriate
+values.
 ```sql
 CREATE USER 'replication-user'@'%' IDENTIFIED BY 'replication-password';
 GRANT SELECT,EVENT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'replication-user'@'%';
